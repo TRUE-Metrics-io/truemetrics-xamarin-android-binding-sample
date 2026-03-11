@@ -2,6 +2,8 @@
 
 This repository contains a **Xamarin.Forms + Xamarin.Android** sample solution used to integrate the **TrueMetrics Android SDK** via a classic **Xamarin.Android Binding** project.
 
+![Sample app screenshot](images/screenshot.png)
+
 It exists primarily to:
 
 - reproduce and fix **dependency alignment** issues when consuming the TrueMetrics Android AAR in Xamarin
@@ -10,11 +12,22 @@ It exists primarily to:
 
 > The native Android demo (Gradle) works as expected, but the same SDK may behave differently when consumed via Xamarin binding. This repo helps isolate those differences.
 
+## SDK reference
+
+- **Docs (Getting Started)**
+  - https://docu.truemetrics.cloud/introduction
+  - Android Native guide: https://docu.truemetrics.cloud/android_native
+- **SDK version used in this repo**
+  - `io.truemetrics:truemetricssdk:1.4.3`
+- **SDK Maven artifacts (GitHub-backed Maven repo)**
+  - https://github.com/TRUE-Metrics-io/truemetrics_android_SDK_p_maven/tree/main/io/truemetrics/truemetricssdk/1.4.3
+  - Maven repository URL (per docs): `https://github.com/TRUE-Metrics-io/truemetrics_android_SDK_p_maven/raw/`
+
 ## What’s inside
 
 - `TrueMetricsBindingSample.sln`
 - `src/TrueMetricsSdk.Binding/`  
-  Xamarin **binding project** for the vendor `truemetricssdk-1.4.3.aar`.
+  Xamarin **binding project** for the vendor TrueMetrics Android SDK (**1.4.3**).
 - `src/TrueMetricsSample/`  
   Xamarin.Forms UI project.
 - `src/TrueMetricsSample.Droid/`  
@@ -34,7 +47,9 @@ The app uses the API key from:
 
 - `src/TrueMetricsSample/Helpers/Constants.cs` (`Constants.TrueMetricsApiKey`)
 
-Do **not** hardcode real keys for public repos. For sharing publicly, replace it with a placeholder.
+Do **not** commit real keys to a public repository.
+
+The TrueMetrics docs use placeholders like `YOUR_API_KEY` in code examples. If you have a sandbox/demo key from TrueMetrics, set it locally in `Constants.cs` before running.
 
 ## Build
 
@@ -116,4 +131,4 @@ It is a community/sample troubleshooting project to help:
 
 ## License
 
-Add your preferred license (MIT/Apache-2.0/etc.) before publishing publicly.
+MIT License. See `LICENSE`.

@@ -47,6 +47,7 @@ namespace TrueMetricsSample.ViewModels
         // Commands
         public ICommand InitCommand { get; }
         public ICommand GetDeviceIdCommand { get; }
+        public ICommand GetActiveConfigCommand { get; }
         public ICommand GetSensorStatisticsCommand { get; }
         public ICommand EnableSensorsCommand { get; }
         public ICommand DisableSensorsCommand { get; }
@@ -62,6 +63,7 @@ namespace TrueMetricsSample.ViewModels
         {
             InitCommand = new Command(async () => await RunActionAsync("Init requested...", svc => svc.InitAsync(Constants.TrueMetricsApiKey)));
             GetDeviceIdCommand = new Command(async () => await RunActionAsync("Getting Device Id...", svc => svc.GetDeviceIdAsync()));
+            GetActiveConfigCommand = new Command(async () => await RunActionAsync("Getting ActiveConfig JSON...", svc => svc.GetActiveConfigJsonAsync()));
             GetSensorStatisticsCommand = new Command(async () => await RunActionAsync("Getting sensor statistics...", svc => svc.GetSensorStatisticsAsync()));
             EnableSensorsCommand = new Command(async () => await RunActionAsync("Enabling all sensors...", svc => svc.EnableSensorsAsync()));
             DisableSensorsCommand = new Command(async () => await RunActionAsync("Disabling all sensors...", svc => svc.DisableSensorsAsync()));

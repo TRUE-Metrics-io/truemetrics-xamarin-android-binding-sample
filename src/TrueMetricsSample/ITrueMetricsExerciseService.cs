@@ -8,6 +8,7 @@ namespace TrueMetricsSample
         Task<string> InitAsync(string apiKey);
         Task<string> GetStatusAsync();
         Task<string> GetDeviceIdAsync();
+        Task<string> GetActiveConfigJsonAsync();
         Task<string> GetSensorStatisticsAsync();
         Task<string> StartRecordingAsync();
         Task<string> EnableSensorsAsync();

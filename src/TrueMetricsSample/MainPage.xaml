@@ -47,23 +47,26 @@
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" Grid.Column="0" Text="Init" Command="{Binding InitCommand}" IsEnabled="{Binding IsNotBusy}" BackgroundColor="{StaticResource Accent}" />
             <Button Grid.Row="0" Grid.Column="1" Text="Get Device Id" Command="{Binding GetDeviceIdCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="1" Grid.Column="0" Text="Enable Sensors" Command="{Binding EnableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
-            <Button Grid.Row="1" Grid.Column="1" Text="Disable Sensors" Command="{Binding DisableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="1" Grid.ColumnSpan="2" Text="Dump ActiveConfig (JSON)" Command="{Binding GetActiveConfigCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="2" Grid.ColumnSpan="2" Text="Get Sensor Statistics" Command="{Binding GetSensorStatisticsCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="2" Grid.Column="0" Text="Enable Sensors" Command="{Binding EnableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="2" Grid.Column="1" Text="Disable Sensors" Command="{Binding DisableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="3" Grid.Column="0" Text="Start Recording" Command="{Binding StartRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />
-            <Button Grid.Row="3" Grid.Column="1" Text="Stop Recording" Command="{Binding StopRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="3" Grid.ColumnSpan="2" Text="Get Sensor Statistics" Command="{Binding GetSensorStatisticsCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="4" Grid.Column="0" Text="Metadata Demo" Command="{Binding MetadataDemoCommand}" IsEnabled="{Binding IsNotBusy}" />
-            <Button Grid.Row="4" Grid.Column="1" Text="Deinitialize" Command="{Binding DeinitCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="4" Grid.Column="0" Text="Start Recording" Command="{Binding StartRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="4" Grid.Column="1" Text="Stop Recording" Command="{Binding StopRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="5" Grid.ColumnSpan="2" Text="Run Full Exercise" Command="{Binding RunAllCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="5" Grid.Column="0" Text="Metadata Demo" Command="{Binding MetadataDemoCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="5" Grid.Column="1" Text="Deinitialize" Command="{Binding DeinitCommand}" IsEnabled="{Binding IsNotBusy}" />
+
+            <Button Grid.Row="6" Grid.ColumnSpan="2" Text="Run Full Exercise" Command="{Binding RunAllCommand}" IsEnabled="{Binding IsNotBusy}" />
           </Grid>
         </StackLayout>
       </Frame>

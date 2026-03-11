@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Android.Content;
@@ -22,6 +24,153 @@ namespace TrueMetricsSample.Droid
     {
         static TruemetricsSdk _sdk;
         static ForegroundNotificationFactoryImpl _notifFactory;
+
+        static string ToJson(object value)
+        {
+            var sb = new StringBuilder();
+            var seen = new HashSet<object>(ReferenceEqualityComparer.Instance);
+            WriteJsonValue(sb, value, seen, depth: 0);
+            return sb.ToString();
+        }
+
+        static void WriteJsonValue(StringBuilder sb, object value, HashSet<object> seen, int depth)
+        {
+            if (depth > 6)
+            {
+                sb.Append("\"<max_depth>\"");
+                return;
+            }
+
+            if (value == null)
+            {
+                sb.Append("null");
+                return;
+            }
+
+            if (value is string s)
+            {
+                sb.Append('"').Append(EscapeJson(s)).Append('"');
+                return;
+            }
+
+            if (value is bool b)
+            {
+                sb.Append(b ? "true" : "false");
+                return;
+            }
+
+            if (value is int || value is long || value is short || value is byte || value is uint || value is ulong || value is ushort)
+            {
+                sb.Append(Convert.ToString(value, CultureInfo.InvariantCulture));
+                return;
+            }
+
+            if (value is float || value is double || value is decimal)
+            {
+                sb.Append(Convert.ToString(value, CultureInfo.InvariantCulture));
+                return;
+            }
+
+            if (value is Enum)
+            {
+                sb.Append('"').Append(EscapeJson(value.ToString())).Append('"');
+                return;
+            }
+
+            if (value is System.Collections.IDictionary dict)
+            {
+                sb.Append('{');
+                var first = true;
+                foreach (var key in dict.Keys)
+                {
+                    if (!first) sb.Append(',');
+                    first = false;
+                    sb.Append('"').Append(EscapeJson(Convert.ToString(key, CultureInfo.InvariantCulture) ?? string.Empty)).Append('"').Append(':');
+                    WriteJsonValue(sb, dict[key], seen, depth + 1);
+                }
+                sb.Append('}');
+                return;
+            }
+
+            var asEnumerable = value as System.Collections.IEnumerable;
+            if (asEnumerable != null && !(value is string))
+            {
+                sb.Append('[');
+                var first = true;
+                foreach (var item in asEnumerable)
+                {
+                    if (!first) sb.Append(',');
+                    first = false;
+                    WriteJsonValue(sb, item, seen, depth + 1);
+                }
+                sb.Append(']');
+                return;
+            }
+
+            if (!value.GetType().IsValueType)
+            {
+                if (seen.Contains(value))
+                {
+                    sb.Append("\"<circular>\"");
+                    return;
+                }
+                seen.Add(value);
+            }
+
+            var type = value.GetType();
+            sb.Append('{');
+            var firstProp = true;
+
+            foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!prop.CanRead) continue;
+                if (prop.GetIndexParameters().Length != 0) continue;
+
+                object propValue;
+                try
+                {
+                    propValue = prop.GetValue(value);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                if (!firstProp) sb.Append(',');
+                firstProp = false;
+                sb.Append('"').Append(EscapeJson(prop.Name)).Append('"').Append(':');
+                WriteJsonValue(sb, propValue, seen, depth + 1);
+            }
+
+            if (firstProp)
+            {
+                // Fallback for types that don't expose useful properties in binding
+                sb.Append('"').Append(EscapeJson(type.Name)).Append("_ToString\"").Append(':');
+                sb.Append('"').Append(EscapeJson(value.ToString() ?? string.Empty)).Append('"');
+            }
+
+            sb.Append('}');
+        }
+
+        static string EscapeJson(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return string.Empty;
+            return s
+                .Replace("\\", "\\\\")
+                .Replace("\"", "\\\"")
+                .Replace("\r", "\\r")
+                .Replace("\n", "\\n")
+                .Replace("\t", "\\t");
+        }
+
+        sealed class ReferenceEqualityComparer : IEqualityComparer<object>
+        {
+            public static readonly ReferenceEqualityComparer Instance = new ReferenceEqualityComparer();
+
+            public new bool Equals(object x, object y) => ReferenceEquals(x, y);
+
+            public int GetHashCode(object obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
+        }
 
         static async Task<T> RunSdkAsync<T>(Func<T> func, int timeoutMs)
         {
@@ -164,8 +313,8 @@ namespace TrueMetricsSample.Droid
                 // The native sample uses Config(apiKey, foregroundNotification, debug=true) which
                 // auto-starts recording. The SdkConfiguration.Builder equivalent is to use
                 // AutoStartOnInit (0) rather than ExplicitStart (-1).
-                var configBuilder = new SdkConfiguration.Builder(apiKey)
-                    .DelayAutoStartRecording(SdkConfiguration.AutoStartOnInit);
+                var configBuilder = new SdkConfiguration.Builder(apiKey);
+                    //.DelayAutoStartRecording(SdkConfiguration.AutoStartOnInit);
                 _notifFactory = new ForegroundNotificationFactoryImpl();
                 configBuilder.ForegroundNotificationFactory(_notifFactory);
                 var config = configBuilder.Build();
@@ -226,7 +375,7 @@ namespace TrueMetricsSample.Droid
             return sb.ToString();
         }
 
-        public async Task<string> GetSensorStatisticsAsync()
+        public async Task<string> GetActiveConfigJsonAsync()
         {
             var sb = new StringBuilder();
             void Log(string s) => sb.AppendLine(s);
@@ -239,6 +388,47 @@ namespace TrueMetricsSample.Droid
                     return sb.ToString();
                 }
 
+                object cfg;
+                try
+                {
+                    cfg = await RunSdkAsync(() => (object)_sdk.ActiveConfig, timeoutMs: 2000).ConfigureAwait(false);
+                }
+                catch (TimeoutException)
+                {
+                    Log("WARNING: ActiveConfig read timed out (2s).");
+                    return sb.ToString();
+                }
+
+                if (cfg == null)
+                {
+                    Log("ActiveConfig: null");
+                    return sb.ToString();
+                }
+
+                Log("ActiveConfigJson:");
+                Log(ToJson(cfg));
+            }
+            catch (Exception ex)
+            {
+                Log("EXCEPTION: " + ex);
+            }
+
+            return sb.ToString();
+        }
+
+        public async Task<string> GetSensorStatisticsAsync()
+        {
+            var sb = new StringBuilder();
+            void Log(string s) => sb.AppendLine(s);
+
+            try
+            {
+                if (_sdk == null)
+                {
+                    Log("ERROR: SDK is not initialized. Tap Init first.");
+                    return sb.ToString();
+                }
+            
                 Log("State(before SensorStatistics): " + await SnapshotStateAsync().ConfigureAwait(false));
 
                 global::System.Collections.Generic.IList<global::IO.Truemetrics.Truemetricssdk.Engine.Stats.SensorStatistics> stats;

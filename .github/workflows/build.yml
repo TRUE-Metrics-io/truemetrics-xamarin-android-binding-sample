@@ -2,7 +2,7 @@ name: Build Xamarin Sample APK
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
     branches: [main]
   workflow_dispatch:

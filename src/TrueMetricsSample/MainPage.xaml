@@ -48,6 +48,7 @@
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" Grid.Column="0" Text="Init" Command="{Binding InitCommand}" IsEnabled="{Binding IsNotBusy}" BackgroundColor="{StaticResource Accent}" />
@@ -58,7 +59,8 @@
             <Button Grid.Row="2" Grid.Column="0" Text="Enable Sensors" Command="{Binding EnableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
             <Button Grid.Row="2" Grid.Column="1" Text="Disable Sensors" Command="{Binding DisableSensorsCommand}" IsEnabled="{Binding IsNotBusy}" />
 
-            <Button Grid.Row="3" Grid.ColumnSpan="2" Text="Get Sensor Statistics" Command="{Binding GetSensorStatisticsCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="3" Grid.Column="0" Text="Get Sensor Statistics" Command="{Binding GetSensorStatisticsCommand}" IsEnabled="{Binding IsNotBusy}" />
+            <Button Grid.Row="3" Grid.Column="1" Text="Get Upload Statistics" Command="{Binding GetUploadStatisticsCommand}" IsEnabled="{Binding IsNotBusy}" />
 
             <Button Grid.Row="4" Grid.Column="0" Text="Start Recording" Command="{Binding StartRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />
             <Button Grid.Row="4" Grid.Column="1" Text="Stop Recording" Command="{Binding StopRecordingCommand}" IsEnabled="{Binding IsNotBusy}" />

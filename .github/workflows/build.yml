@@ -17,7 +17,7 @@ jobs:
       CONFIGURATION: Release
       ANDROID_HOME: /Users/runner/Library/Android/sdk
       TRUEMETRICS_API_KEY: ${{ secrets.TRUEMETRICS_API_KEY }}
-      TRUEMETRICS_SDK_VERSION: "1.4.5"
+      TRUEMETRICS_SDK_VERSION: "1.4.6"
 
     steps:
       - uses: actions/checkout@v5
@@ -90,7 +90,6 @@ jobs:
           else
             echo "::warning::No API key found — APK will have placeholder"
           fi
-
 
       - name: NuGet restore
         run: msbuild TrueMetricsBindingSample.sln -t:Restore -p:Configuration=$CONFIGURATION -nologo -v:minimal

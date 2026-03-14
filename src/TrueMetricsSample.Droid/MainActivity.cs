@@ -25,6 +25,22 @@ namespace TrueMetricsSample.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
 
+            // Plant Timber so SDK logs are visible in logcat
+            try
+            {
+                var debugTreeClass = Java.Lang.Class.ForName("timber.log.Timber$DebugTree");
+                var tree = debugTreeClass.GetConstructor().NewInstance();
+                var timberClass = Java.Lang.Class.ForName("timber.log.Timber");
+                var treeClass = Java.Lang.Class.ForName("timber.log.Timber$Tree");
+                // Timber.plant(Tree) - single tree overload
+                var plantMethod = timberClass.GetMethod("plant", treeClass);
+                plantMethod.Invoke(null, tree);
+            }
+            catch (Java.Lang.Exception ex)
+            {
+                Android.Util.Log.Warn("TrueMetricsSample", "Failed to plant Timber: " + ex.Message);
+            }
+
             LoadApplication(new TrueMetricsSample.App());
 
             // Request foreground permissions first — matches native sample which

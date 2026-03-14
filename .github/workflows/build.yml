@@ -63,6 +63,23 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
+      - name: Inject SDK API key
+        env:
+          TRUEMETRICS_API_KEY: ${{ secrets.TRUEMETRICS_API_KEY }}
+        run: |
+          # On CI: generate .secrets.properties from GitHub secret
+          if [ -n "$TRUEMETRICS_API_KEY" ] && [ ! -f .secrets.properties ]; then
+            echo "TRUEMETRICS_API_KEY=$TRUEMETRICS_API_KEY" > .secrets.properties
+          fi
+          # Read active key from .secrets.properties
+          API_KEY=$(grep -v '^#' .secrets.properties | grep 'TRUEMETRICS_API_KEY=' | tail -1 | cut -d= -f2-)
+          if [ -n "$API_KEY" ]; then
+            sed -i '' "s/INJECT_API_KEY/$API_KEY/g" src/TrueMetricsSample/Helpers/Constants.cs
+            echo "API key injected (${#API_KEY} chars)"
+          else
+            echo "::warning::No API key found in .secrets.properties or secrets"
+          fi
+
       - name: NuGet restore
         run: msbuild TrueMetricsBindingSample.sln -t:Restore -p:Configuration=$CONFIGURATION -nologo -v:minimal
 

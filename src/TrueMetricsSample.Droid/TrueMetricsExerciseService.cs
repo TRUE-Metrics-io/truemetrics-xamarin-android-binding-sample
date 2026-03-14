@@ -474,6 +474,56 @@ namespace TrueMetricsSample.Droid
             return sb.ToString();
         }
 
+        public async Task<string> GetUploadStatisticsAsync()
+        {
+            var sb = new StringBuilder();
+            void Log(string s) => sb.AppendLine(s);
+
+            try
+            {
+                if (_sdk == null)
+                {
+                    Log("ERROR: SDK is not initialized. Tap Init first.");
+                    return sb.ToString();
+                }
+
+                IO.Truemetrics.Truemetricssdk.Engine.Stats.UploadStatistics stats;
+                try
+                {
+                    stats = await RunSdkAsync(() => _sdk.UploadStatistics, timeoutMs: 2000).ConfigureAwait(false);
+                }
+                catch (TimeoutException)
+                {
+                    Log("WARNING: UploadStatistics read timed out (2s).");
+                    return sb.ToString();
+                }
+
+                if (stats == null)
+                {
+                    Log("UploadStatistics: null");
+                    return sb.ToString();
+                }
+
+                Log("SuccessfulUploadsCount: " + stats.SuccessfulUploadsCount);
+                var ts = stats.LastSuccessfulUploadTimestamp;
+                if (ts != null)
+                {
+                    var dt = DateTimeOffset.FromUnixTimeMilliseconds(ts.LongValue());
+                    Log("LastSuccessfulUpload: " + dt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                else
+                {
+                    Log("LastSuccessfulUpload: never");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log("EXCEPTION: " + ex);
+            }
+
+            return sb.ToString();
+        }
+
         public async Task<string> GetDeviceIdAsync()
         {
             var sb = new StringBuilder();

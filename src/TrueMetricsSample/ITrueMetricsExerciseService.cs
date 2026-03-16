@@ -16,6 +16,7 @@ namespace TrueMetricsSample
         Task<string> StopRecordingAsync();
         Task<string> MetadataDemoAsync();
         Task<string> DeinitializeAsync();
+        Task<string> GetUploadStatisticsAsync();
         Task<string> RunAllAsync(string apiKey);
     }
 }

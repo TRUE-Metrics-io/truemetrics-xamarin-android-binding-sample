@@ -165,14 +165,16 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseVendorMavenDeps)' == 'true'">
-    <!-- Vendor Maven-aligned AndroidX/SQLite/Room/DataStore/SQLCipher dependencies for TrueMetrics 1.4.3 -->
-    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\lifecycle-process-2.2.0.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\lifecycle-process-2.2.0.aar')" />
-    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\startup-runtime-1.2.0.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\startup-runtime-1.2.0.aar')" />
+    <!-- Vendor Maven-aligned AndroidX/SQLite/Room/DataStore/SQLCipher dependencies for TrueMetrics 1.4.5 -->
+    <!-- lifecycle-process and startup-runtime are provided by NuGet transitive deps (Xamarin.AndroidX.Lifecycle.Process, Xamarin.AndroidX.Startup.StartupRuntime) -->
+    <!-- Do NOT vendor them here — vendoring causes "Type defined multiple times" D8 errors -->
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\work-runtime-2.9.0.aar" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\work-runtime-ktx-2.9.0.aar" />
-    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-runtime-2.4.3.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-runtime-2.4.3.aar')" />
-    <AndroidLibrary Include="$(NuGetPackageRoot)xamarin.androidx.room.runtime/2.3.0.5/aar/androidx.room.room-runtime.aar" Condition="!Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-runtime-2.4.3.aar') And Exists('$(NuGetPackageRoot)xamarin.androidx.room.runtime/2.3.0.5/aar/androidx.room.room-runtime.aar')" />
-    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-common-2.4.3.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-common-2.4.3.jar')" />
+    <!-- room-runtime-android-2.7.2.aar patched: removed androidx/room/paging/* that cause D8 NPE -->
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-runtime-android-2.7.2.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-runtime-android-2.7.2.aar')" />
+    <AndroidLibrary Include="$(NuGetPackageRoot)xamarin.androidx.room.runtime/2.3.0.5/aar/androidx.room.room-runtime.aar" Condition="!Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-runtime-android-2.7.2.aar') And Exists('$(NuGetPackageRoot)xamarin.androidx.room.runtime/2.3.0.5/aar/androidx.room.room-runtime.aar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-common-2.7.2.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-common-2.7.2.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-common-jvm-2.7.2.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-common-jvm-2.7.2.jar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\room-ktx-2.7.2.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\room-ktx-2.7.2.aar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\sqlite-ktx-2.5.2.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlite-ktx-2.5.2.aar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\sqlite-framework-android-2.5.2.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlite-framework-android-2.5.2.aar')" />
@@ -180,7 +182,12 @@
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\sqlite-android-2.5.2.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlite-android-2.5.2.aar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\sqlite-2.5.2.aar" Condition="!Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlite-android-2.5.2.aar') And Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlite-2.5.2.aar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-core-1.1.7.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-core-1.1.7.aar')" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-1.1.7.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-1.1.7.aar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-core-okio-1.1.7.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-core-okio-1.1.7.jar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-preferences-1.1.7.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-preferences-1.1.7.aar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-preferences-core-1.1.7.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-preferences-core-1.1.7.jar')" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\datastore-preferences-core-android-1.1.7.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\datastore-preferences-core-android-1.1.7.aar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\okio-jvm-3.4.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\okio-jvm-3.4.0.jar')" />
     <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\sqlcipher-android-4.9.0.aar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\sqlcipher-android-4.9.0.aar')" />
 
     <!-- Vendor Maven-aligned Kotlin + Coroutines (Kotlin stdlib required by SDK is 2.2.20) -->
@@ -202,13 +209,24 @@
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-http-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-http-jvm-3.3.0.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-events-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-events-jvm-3.3.0.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-serialization-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-serialization-jvm-3.3.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-http-cio-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-http-cio-jvm-3.3.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-websockets-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-websockets-jvm-3.3.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-websocket-serialization-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-websocket-serialization-jvm-3.3.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\ktor-sse-jvm-3.3.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\ktor-sse-jvm-3.3.0.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\slf4j-api-1.7.36.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\slf4j-api-1.7.36.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-serialization-json-jvm-1.9.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-serialization-json-jvm-1.9.0.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-serialization-core-jvm-1.9.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-serialization-core-jvm-1.9.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-serialization-json-io-jvm-1.9.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-serialization-json-io-jvm-1.9.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-serialization-protobuf-jvm-1.6.3.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-serialization-protobuf-jvm-1.6.3.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-coroutines-core-jvm-1.10.2.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-coroutines-core-jvm-1.10.2.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-coroutines-android-1.10.2.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-coroutines-android-1.10.2.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-coroutines-slf4j-1.10.2.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-coroutines-slf4j-1.10.2.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\atomicfu-jvm-0.23.1.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\atomicfu-jvm-0.23.1.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\stately-concurrency-jvm-2.1.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\stately-concurrency-jvm-2.1.0.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\stately-concurrent-collections-jvm-2.1.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\stately-concurrent-collections-jvm-2.1.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\stately-strict-jvm-2.1.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\stately-strict-jvm-2.1.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-io-core-jvm-0.8.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-io-core-jvm-0.8.0.jar')" />
+    <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\kotlinx-io-bytestring-jvm-0.8.0.jar" Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\vendor\\kotlinx-io-bytestring-jvm-0.8.0.jar')" />
   </ItemGroup>
 
   <ItemGroup>
@@ -226,10 +244,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AndroidLibrary Include="/Users/dkumar/Library/Caches/XamarinBuildDownload/playserviceslocation-21.3.0/playserviceslocation-21.3.0.aar" Condition="Exists('/Users/dkumar/Library/Caches/XamarinBuildDownload/playserviceslocation-21.3.0/playserviceslocation-21.3.0.aar')" />
-    <AndroidLibrary Include="/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicesbase-18.9.0/playservicesbase-18.9.0.aar" Condition="Exists('/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicesbase-18.9.0/playservicesbase-18.9.0.aar')" />
-    <AndroidLibrary Include="/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicesbasement-18.9.0/playservicesbasement-18.9.0.aar" Condition="Exists('/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicesbasement-18.9.0/playservicesbasement-18.9.0.aar')" />
-    <AndroidLibrary Include="/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicestasks-18.4.0/playservicestasks-18.4.0.aar" Condition="Exists('/Users/dkumar/Library/Caches/XamarinBuildDownload/playservicestasks-18.4.0/playservicestasks-18.4.0.aar')" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\play-services-location-21.3.0.aar" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\play-services-base-18.9.0.aar" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\play-services-basement-18.9.0.aar" />
+    <AndroidLibrary Include="..\TrueMetricsSdk.Binding\Jars\vendor\play-services-tasks-18.4.0.aar" />
   </ItemGroup>
 
   <ItemGroup>
@@ -264,6 +282,7 @@
     </ItemGroup>
   </Target>
 
+
   <ItemGroup Condition="Exists('..\\TrueMetricsSdk.Binding\\Jars\\timber-5.0.1.aar')">
     <AndroidLibrary Include="..\\TrueMetricsSdk.Binding\\Jars\\timber-5.0.1.aar" />
   </ItemGroup>
@@ -279,7 +298,7 @@
 
   <!-- kotlinx-coroutines is provided by NuGet package Xamarin.KotlinX.Coroutines.* -->
 
-  <!-- Ktor 3.0.3 — matches what truemetricssdk-1.4.3.aar was compiled against (Ktor 2.x API is INCOMPATIBLE) -->
+  <!-- Ktor 3.0.3 — matches what truemetricssdk-1.4.5.aar was compiled against (Ktor 2.x API is INCOMPATIBLE) -->
   <ItemGroup Condition="'$(UseVendorMavenDeps)' != 'true'">
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\ktor-client-core-jvm-3.0.3.jar" Condition="Exists('..\TrueMetricsSdk.Binding\Jars\ktor-client-core-jvm-3.0.3.jar')" />
     <AndroidJavaLibrary Include="..\TrueMetricsSdk.Binding\Jars\ktor-client-android-jvm-3.0.3.jar" Condition="Exists('..\TrueMetricsSdk.Binding\Jars\ktor-client-android-jvm-3.0.3.jar')" />

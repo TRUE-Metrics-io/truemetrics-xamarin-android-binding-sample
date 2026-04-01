@@ -41,3 +41,4 @@ src/**/appsettings.json
 # Crash / diagnostic dumps
 *.dmp
 *.hprof
+.claude/settings.local.json

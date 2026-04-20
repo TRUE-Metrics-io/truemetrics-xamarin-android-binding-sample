@@ -18,16 +18,16 @@ It exists primarily to:
   - https://docu.truemetrics.cloud/introduction
   - Android Native guide: https://docu.truemetrics.cloud/android_native
 - **SDK version used in this repo**
-  - `io.truemetrics:truemetricssdk:1.5.2`
+  - `io.truemetrics:truemetricssdk:1.5.3`
 - **SDK Maven artifacts (GitHub-backed Maven repo)**
-  - https://github.com/TRUE-Metrics-io/truemetrics_android_SDK_p_maven/tree/main/io/truemetrics/truemetricssdk/1.5.2
+  - https://github.com/TRUE-Metrics-io/truemetrics_android_SDK_p_maven/tree/main/io/truemetrics/truemetricssdk/1.5.3
   - Maven repository URL (per docs): `https://github.com/TRUE-Metrics-io/truemetrics_android_SDK_p_maven/raw/`
 
 ## What’s inside
 
 - `TrueMetricsBindingSample.sln`
 - `src/TrueMetricsSdk.Binding/`  
-  Xamarin **binding project** for the vendor TrueMetrics Android SDK (**1.5.2**).
+  Xamarin **binding project** for the vendor TrueMetrics Android SDK (**1.5.3**).
 - `src/TrueMetricsSample/`  
   Xamarin.Forms UI project.
 - `src/TrueMetricsSample.Droid/`  
